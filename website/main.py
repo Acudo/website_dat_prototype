@@ -2,7 +2,8 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user
- 
+import datetime
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 app.config["SECRET_KEY"] = "abc"
@@ -17,11 +18,13 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     streak = db.Column(db.Integer, nullable=False)
- 
+    created = db.Column(db.DateTime, default=datetime.datetime.now(datetime.UTC))
+    lastlogin = db.Column(db.DateTime, default=datetime.datetime.now(datetime.UTC))
+
  
 db.init_app(app)
- 
- 
+
+
 with app.app_context():
     db.create_all()
  
@@ -50,8 +53,10 @@ def login():
             username=request.form.get("username")).first()
         if user.password == request.form.get("password"):
             login_user(user)
-            user.streak += 1
-            print(user.streak)
+            user.lastlogin = datetime.datetime.now(datetime.UTC)
+            if user.lastlogin > datetime.datetime.now(datetime.UTC):
+                user.streak += 1
+            db.session.commit()
             return redirect(url_for("home"))
     return render_template("login.html")
  
