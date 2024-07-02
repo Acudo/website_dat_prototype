@@ -53,9 +53,14 @@ def login():
             username=request.form.get("username")).first()
         if user.password == request.form.get("password"):
             login_user(user)
-            user.lastlogin = datetime.datetime.now(datetime.UTC)
-            if user.lastlogin > datetime.datetime.now(datetime.UTC):
+            print((datetime.datetime.now() - user.lastlogin).days)
+            # Checks if it is a different day
+            day_difference = (datetime.datetime.now() - user.lastlogin).days
+            if day_difference == 1:
                 user.streak += 1
+            elif day_difference >= 2:
+                user.streak = 0
+            user.lastlogin = datetime.datetime.now(datetime.UTC)
             db.session.commit()
             return redirect(url_for("home"))
     return render_template("login.html")
