@@ -9,7 +9,9 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SECRET_KEY"] = "abc"
 db = SQLAlchemy()
- 
+
+app.static_folder = 'static'
+
 login_manager = LoginManager()
 login_manager.init_app(app)
  
@@ -21,16 +23,34 @@ class Users(UserMixin, db.Model):
     streak = db.Column(db.Integer, nullable=False)
     last_login = db.Column(db.DateTime, nullable=False)
     last_streak_update = db.Column(db.DateTime, nullable=False)
+    #pending_friends = db.Column(db.ARRAY(db.Integer), default = [])
+    #friends = db.Column(db.ARRAY(db.Integer), default = [])
 
- 
+
 db.init_app(app)
+
+
+with app.app_context():
+    db.create_all()
+
 
 def get_current_time():
     return datetime.datetime.now(datetime.UTC)
 
-with app.app_context():
-    db.create_all()
+
+# Sends a chosen user a friend request
+def add_friend(sender, receiver):
+    user1 = Users.query.get(sender)
+    user2 = Users.query.get(receiver)
+    user2.pending_friends.append(sender)
+
+# Approves a user's friend request
+def approve_friend(sender, receiver):
+    user1 = Users.query.get(sender)
+    user2 = Users.query.get(receiver)
+    user2.pending_friends.remove(receiver)
  
+
 # Find a user when they log in
 @login_manager.user_loader
 def loader_user(user_id):
@@ -72,7 +92,13 @@ def login():
             db.session.commit()
             return redirect(url_for("home"))
     return render_template("login.html")
- 
+
+# Friend List
+@app.route('/social', methods=["GET", "POST"])
+def social():
+    user = user
+
+
 # Logs out user
 @app.route("/logout")
 def logout():

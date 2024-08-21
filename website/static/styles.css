@@ -8,6 +8,7 @@ ul {
   
 li {
     float: left;
+    display: inline;
 }
   
 li a {
@@ -16,9 +17,27 @@ li a {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    font: 20px Arial, sans-serif;
 }
   
 /* Change the link color to #111 (black) on hover */
 li a:hover {
     background-color: #111;
+}
+
+.active {
+    background-color: #aa0404;
+}
+
+/*Logout Button*/
+.logout {
+    display: block;
+    color: #111;
+    padding: 14px 16px;
+    text-decoration: none;
+    font: 20px Arial, sans-serif;
+}
+
+h1 {
+    font: 20px Arial, sans-serif;
 }
