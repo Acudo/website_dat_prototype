@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Login</title>
+    <style>
+        h1{
+          color: rgb(128, 0, 0);
+          }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Create account</a></li>
+        <li><a class="avtive" href="/social">Social</a></li>
+      </ul>
+    </nav>
+    <h1>Send Friend Request</h1>
+    <form action="#" method="post">
+      <label for="username">Friend Username:</label>
+      <input type="text" name="username" />
+      <button type="submit">Submit</button>
+    <h1>Pending requests</h1>
+    <body>{{ current_user.pending_friends }}</body>
+    </form>
+  </body>
+</html>

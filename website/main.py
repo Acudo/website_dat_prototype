@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 import sqlite3
-from flask_login import LoginManager, UserMixin, login_user, logout_user
+from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
 import datetime
 
 app = Flask(__name__)
@@ -23,8 +23,8 @@ class Users(UserMixin, db.Model):
     streak = db.Column(db.Integer, nullable=False)
     last_login = db.Column(db.DateTime, nullable=False)
     last_streak_update = db.Column(db.DateTime, nullable=False)
-    #pending_friends = db.Column(db.ARRAY(db.Integer), default = [])
-    #friends = db.Column(db.ARRAY(db.Integer), default = [])
+    friends = db.Column(db.JSON(db.Integer), default = [])
+    pending_friends = db.Column(db.JSON(db.Integer), default = [])
 
 
 db.init_app(app)
@@ -93,11 +93,6 @@ def login():
             return redirect(url_for("home"))
     return render_template("login.html")
 
-# Friend List
-@app.route('/social', methods=["GET", "POST"])
-def social():
-    user = user
-
 
 # Logs out user
 @app.route("/logout")
@@ -109,7 +104,20 @@ def logout():
 @app.route("/")
 def home():
     return render_template("home.html")
+
+# Friend List
+@app.route('/social', methods=["GET", "POST"])
+def social():
+    if request.method == "POST":
+        receiver = Users.query.filter_by(
+                username = request.form.get("username")).first()
+        print(receiver.username)
+        receiver.pending_friends.append(current_user.id)
+        print(current_user.username)
+        db.session.commit()
+    return render_template("social.html")
  
+
 # Runs the main script
 if __name__ == "__main__":
     app.run()
