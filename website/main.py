@@ -43,6 +43,20 @@ def get_current_time():
 def loader_user(user_id):
     return Users.query.get(user_id)
  
+
+@app.route("/")
+def index():
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+    else:
+        return redirect(url_for("login"))
+
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
+
 # Adds user to the database when they register
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -87,10 +101,6 @@ def logout():
     logout_user()
     return redirect(url_for("home"))
  
- 
-@app.route("/")
-def home():
-    return render_template("home.html")
 
 # Friend List
 @app.route('/social', methods=["GET", "POST"])
