@@ -36,19 +36,6 @@ with app.app_context():
 
 def get_current_time():
     return datetime.datetime.now(datetime.UTC)
-
-
-# Sends a chosen user a friend request
-def add_friend(sender, receiver):
-    user1 = Users.query.get(sender)
-    user2 = Users.query.get(receiver)
-    user2.pending_friends.append(sender)
-
-# Approves a user's friend request
-def approve_friend(sender, receiver):
-    user1 = Users.query.get(sender)
-    user2 = Users.query.get(receiver)
-    user2.pending_friends.remove(receiver)
  
 
 # Find a user when they log in
@@ -111,9 +98,11 @@ def social():
     if request.method == "POST":
         receiver = Users.query.filter_by(
                 username = request.form.get("username")).first()
+        receiver.pending_friends = receiver.pending_friends + [current_user.id]
         print(receiver.username)
-        receiver.pending_friends.append(current_user.id)
+        #receiver.pending_friends.append(current_user.id)
         print(current_user.username)
+        db.session.add(receiver)
         db.session.commit()
     return render_template("social.html")
  
