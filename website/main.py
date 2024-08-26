@@ -105,16 +105,17 @@ def logout():
 # Friend List
 @app.route('/social', methods=["GET", "POST"])
 def social():
-    if request.method == "POST":
+    print(request)
+    if request.method == "POST" and "username" in request.form:
         receiver = Users.query.filter_by(
                 username = request.form.get("username")).first()
-        receiver.pending_friends = receiver.pending_friends + [current_user.id]
-        print(receiver.username)
-        #receiver.pending_friends.append(current_user.id)
-        print(current_user.username)
+        receiver.pending_friends = receiver.pending_friends + [current_user.username]
         db.session.add(receiver)
         db.session.commit()
-    return render_template("social.html")
+    elif request.method == "POST" and "":
+        pass
+
+    return render_template("social.html", pending_friends=current_user.pending_friends)
  
 
 # Runs the main script

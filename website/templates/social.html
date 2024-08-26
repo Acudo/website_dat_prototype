@@ -27,7 +27,13 @@
       <button type="submit">Submit</button>
     <h1>Pending requests</h1>
     <body>{{ current_user.pending_friends }}</body>
-    <body>{{ current_user.friends }}</body>
+    <body>{{ current_user.friends }}</body><br>
+    {% for friend in pending_friends %}
+    <form action="accept_friend" method="post">
+      <b>{{ friend }}</b>
+      <button type="{{ friend }}">Accept</button>
+    </form>
+    {% endfor %}
     </form>
   </body>
 </html>
