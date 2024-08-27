@@ -166,8 +166,8 @@ def pages():
             print(file_location)
             load_page = True
     if load_page:
-        #return render_template(file_location)
-        return render_template("pages/test/home.html")
+        #return render_template()
+        return render_template(file_location)
     else:
         return render_template("pages.html", pages=current_user.pages)
 
