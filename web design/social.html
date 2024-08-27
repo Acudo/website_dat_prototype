@@ -3,16 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="styles.css">
     <title>Login</title>
+    <style>
+        h1{
+          color: rgb(128, 0, 0);
+          }
+    </style>
   </head>
   <body>
     <nav>
       <ul>
         <li><a href="/home">Home</a></li>
         <li><a class="active" href="/social">Social</a></li>
-        <li><a href="/pages">Pages</a></li>
-        <li style="float:right"><a class="logout" href="/logout">Logout</a></li>
       </ul>
     </nav>
     <h1>Send Friend Request</h1>
@@ -22,7 +25,7 @@
       <button type="submit" name="submit_button" value="send">Submit</button>
     <h1>Friend List</h1>
     {% for friend in friends %}
-    <p>{{ friend }}</p>
+    <body>{{ friend }}</body>
     {% endfor %}
     <h1>Pending Friend Requests</h1>
     {% for friend in pending_friends %}

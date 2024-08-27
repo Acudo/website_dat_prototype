@@ -9,14 +9,20 @@
   <body>
     <nav>
       <ul>
-        <li><a class="active" href="/home">Home</a></li>
+        <li><a href="/home">Home</a></li>
         <li><a href="/social">Social</a></li>
-        <li><a href="/pages">Pages</a></li>
+        <li><a class="active" href="/pages">Pages</a></li>
         <li style="float:right"><a class="logout" href="/logout">Logout</a></li>
       </ul>
     </nav>
-    <h1>Your name is {{ current_user.username }}</h1>
-    <h1>You are logged in</h1>
-    <h1>Streak: {{ current_user.streak }}</h1>
+    <h1>Upload Page</h1>
+    <form method="post" enctype=multipart/form-data>
+    <input type=file name=file>
+    <input type="submit" name="submit_button" value="upload">
+    <h1>Pages</h1>
+    {% for page in pages %}
+    <button type="submit" name="submit_button" value="{{ page }}">Launch {{ page }}</button>
+    {% endfor %}
+    </form>
   </body>
 </html>
