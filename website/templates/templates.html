@@ -4,26 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>Pages</title>
+    <title>Templates</title>
   </head>
   <body>
     <nav>
       <ul>
         <li><a href="/home">Home</a></li>
         <li><a href="/social">Social</a></li>
-        <li><a class="active" href="/pages">Pages</a></li>
-        <li><a href="/templates">Templates</a></li>
+        <li><a href="/pages">Pages</a></li>
+        <li><a class="active" href="/templates">Templates</a></li>
         <li style="float:right"><a class="logout" href="/logout">Logout</a></li>
       </ul>
     </nav>
-    <h1>Upload Page</h1>
-    <form method="post" enctype=multipart/form-data>
-    <input type=file name=file>
-    <input type="submit" name="submit_button" value="upload">
-    <h1>Pages</h1>
-    {% for page in pages %}
-    <button type="submit" name="submit_button" value="{{ page }}">Launch {{ page }}</button>
-    {% endfor %}
+    <h1>Templates</h1>
+    {% for page in templates %}
+    <form action="#" method="post">
+      <button type="submit" name="submit_button" value="{{ page }}">Add {{ page }}</button>
     </form>
+    {% endfor %}
   </body>
 </html>

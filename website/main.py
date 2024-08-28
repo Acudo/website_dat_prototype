@@ -1,5 +1,6 @@
 # Dependencies Used
 import os
+import shutil
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm.attributes import flag_modified
@@ -170,6 +171,21 @@ def pages():
         return render_template(file_location)
     else:
         return render_template("pages.html", pages=current_user.pages)
+
+
+@app.route('/templates', methods=["GET", "POST"])
+def templates():
+    if request.method == 'POST' and request.form['submit_button']:
+        filename = request.form['submit_button']
+        folder = os.path.join(app.config['UPLOAD_FOLDER'], current_user.username)
+        shutil.copyfile('/'.join(('page_templates', filename)), os.path.join(folder, filename))
+        current_user.pages.append(filename)
+        flag_modified(current_user, 'pages')
+        db.session.add(current_user)
+        db.session.commit()
+        return redirect(url_for("pages"))
+    templates = os.listdir('page_templates')
+    return render_template('templates.html', templates=templates)
 
 
 # Runs the main script
