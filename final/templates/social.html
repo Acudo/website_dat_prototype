@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Social</title>
+  </head>
+  <body style="background-color:powderblue;">
+    <nav>
+      <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a class="active" href="/social">Social</a></li>
+        <li><a href="/pages">Pages</a></li>
+        <li><a href="/templates">Templates</a></li>
+        <li style="float:right"><a class="logout" href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+    <h1>Send Friend Request</h1>
+    <form action="#" method="post">
+      <label for="username">Friend Username:</label>
+      <input type="text" name="username" />
+      <button type="submit" name="submit_button" value="send">Submit</button>
+    <h1>Friend List</h1>
+    {% for friend in friends %}
+    <p>{{ friend }}</p>
+    {% endfor %}
+    <h1>Pending Friend Requests</h1>
+    {% for friend in pending_friends %}
+    <form action="#" method="post">
+      <button type="submit" name="submit_button" value="{{ friend }}">Accept {{ friend }}</button>
+    </form>
+    {% endfor %}
+    </form>
+  </body>
+</html>
